@@ -1,0 +1,21 @@
+Querying Data Stored in HDFS
+Vertica can query data directly from HDFS without requiring you to copy data.
+Doing so allows you to explore a large data lake without copying data into Vertica for analysis (and keeping the copy up to date).
+Queries against data in columnar formats are optimized to reduce the amount of data that Vertica has to read.
+
+To query data, you define an external table as for any other external data source. (This option does not make use of schema definitions from Hive.) See Working with External Data for more about creating external tables, and Reading ORC and Parquet Formats for more about optimizations specific to these native Hadoop file formats.
+
+Vertica can query the data directly from the HDFS nodes, bypassing the WebHDFS service. To query data directly, Vertica needs access to HDFS configuration files.  See Using HDFS URLs.
+
+Querying Data Using the HCatalog Connector
+The HCatalog Connector uses Hadoop services (Hive and HCatalog) to query data stored in HDFS. Using the HCatalog Connector, Vertica can use Hive's schema definitions. However, performance can be poor compared to defining your own external table and querying the data directly. The HCatalog Connector is also sensitive to changes in the Hadoop libraries on which it depends; upgrading your Hadoop cluster might affect your HCatalog connections.
+
+See Using the HCatalog Connector.
+
+Using ROS Data
+Storing data in the Vertica native file format (ROS) delivers better query performance than reading externally-stored data. You can create storage locations on your HDFS cluster to hold ROS data. Even if your data is already stored in HDFS, you might choose to copy that data into an HDFS storage location for better performance. If your Vertica cluster also uses local file storage, you can use HDFS storage locations for lower-priority data.
+
+See Using HDFS Storage Locations for information about creating and managing HDFS storage locations, and Using HDFS URLs for information about copying data into them.
+
+Exporting Data
+You might want to export data from Vertica, either to share it with other Hadoop-based applications or to move lower-priority data from ROS to less-expensive storage. You can export a table, or part of one, in Hadoop columnar format. After export you can still query the data using an external table, as for any other data.
